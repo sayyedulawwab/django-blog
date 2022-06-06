@@ -1,0 +1,51 @@
+{% extends "blog/base.html" %} {% load crispy_forms_tags %}{% block content %}
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small> {% if post.author == user %}
+            <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' post.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.id %}">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+        <h2 class="article-title">{{ post.title }}</h2>
+        <p class="article-content">{{ post.content }}</p>
+        <hr> <br><br>
+        <h2 class="pb-5">Comments</h2>
+        {% for comment in comments %} {% if 'comments' and 'edit' not in request.path %}
+        <div class="comment">
+            <div class="comment-author">{{comment.author}}</div>
+            <div class="comment-date">{{comment.date|date:"F d,Y"}}</div>
+            <div class="comment-content">{{comment.content}}</div>
+            {% if comment.author == user %}
+            <div>
+
+                <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'comment-update' post.id comment.id %}">Edit</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'comment-delete' post.id comment.id %}">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+
+        {% endif %} {% endfor %} {% if user.is_authenticated %}
+
+        <div>
+
+            {% if comment_form is None %}
+
+            <a class="btn btn-primary" href="{% url 'comment-create' post.id %}">Leave a comment</a> {% endif %}
+            <form method="post" style="margin-top: 1.3em;">
+                {{ comment_form|crispy }} {% csrf_token %} {% if comment_form %}
+
+                <button type="submit" class="btn btn-success  btn-lg">Comment</button> {% endif %}
+            </form>
+        </div>
+        {% else %}
+
+        <a class="btn btn-primary btn-lg" href="{% url 'login' %}">Login to comment</a> {% endif %}
+
+    </div>
+</article>
+{% endblock content %}
