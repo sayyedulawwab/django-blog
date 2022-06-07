@@ -1,18 +1,5 @@
 <h1 align="center">Blog Application</h1>
 
-<div align="center">
-  <h3>
-    <a href="">
-      Live
-    </a>
-    <span> | </span>
-    <a href="https://github.com/sayyedulawwab/django-blog">
-      Code
-    </a>
-    
-  </h3>
-</div>
-
 A blog application made with python django framework. Users can create account and add new posts to the site and update and delete their posts. Users can add, edit and delete comments on posts
 
 <details open>
